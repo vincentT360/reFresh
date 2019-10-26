@@ -49,27 +49,18 @@ class Ingredient:
         self.name = name
         self.sp_id = id
         self.image = image
-        if any((u in unit) for u in ('serving', 'inch')):
+        try:
+            if any((u in unit) for u in ('serving', 'inch', 'large', 'medium')):
+                self.unit = 'count'
+            else:
+                self.unit = self.ureg.parse_expression(unit)
+        except:
             self.unit = 'count'
-        else:
-            self.unit = self.ureg.parse_expression(unit)
         self.amount = amount
         self.full_title = original
 
     def __str__(self):
         return self.full_title
-
-    # def __rsub__(self, left):
-    #     try:
-    #         if type(left) is wallAPI.ProductDetail:
-    #             amount = left.quant * (
-    #                 left.quantType if left.quantType != 'count' else 1) - self.amount * self.unit if self.unit != 'count' else 1
-    #             return Ingredient(self.name, self.sp_id, self.image, str(self.unit), amount, self.full_title, self.ureg)
-    #     except pint.errors.DimensionalityError:
-    #         print(left.quantType, left.quant)
-    #         print(self.amount, self.unit)
-    #         raise
-    #         return 0
 
     def __sub__(self, right):
         if type(right) in (wallAPI.ProductDetail, Ingredient):
