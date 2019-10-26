@@ -86,7 +86,7 @@ class WalmartApi:
         quant = ""
         quantType = ""
 
-        productUrl = prodResults['basic']['name'].lower(
+        productUrl = prodResults['basic']['name'].lower()
 
         # Attempts to isolate the quantity and quantity type in the name
         for qType in possibleQuants:
