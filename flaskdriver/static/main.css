@@ -1,0 +1,13 @@
+body {
+    font-family: "Times New Roman";
+    font-size: 18px;
+}
+
+.navbar-brand {
+    font-size: 2.0em;
+}
+
+#home-container {
+    height: 100vh;
+    border: 1px solid grey;
+}
