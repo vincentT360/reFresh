@@ -1,6 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.select.label(class="form-control-label") }}
+    {{ form.select(class="form-select") }}
+    {{ form.submit(class="btn btn-outline-info") }}
+</form>
 
 {% for recipe in recipes %}
     <p>{{ recipe.title }}</p>
