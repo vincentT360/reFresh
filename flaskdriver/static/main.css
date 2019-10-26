@@ -1,5 +1,5 @@
 body {
-    font-family: "Times New Roman";
+    font-family: "Quicksand";
     font-size: 18px;
 }
 
@@ -9,5 +9,24 @@ body {
 
 #home-container {
     height: 100vh;
-    border: 1px solid grey;
+    /*border: 1px solid grey;*/
+}
+
+#splash-row {
+    height: 50vh;
+}
+
+#splash-img {
+    height: 50vh;
+    width: 100vw;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+
+#nav-img {
+    height: 10vh;
+}
+
+#ingredients-div {
+    margin-top: 5vh;
 }
