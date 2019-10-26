@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container">
+    {% for item in groceries %}
+        <p>{{ item.name }}</p>
+    {% endfor %}
+    <form action="" method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.name.label(class="form-control-label") }}
+        {{ form.name(class="form-control form-control-lg") }}
+        {{ form.submit(class="btn btn-outline-info") }}
+    </form>
+    
+</div>
+
+
+{% endblock content %}
