@@ -54,7 +54,6 @@ class WalmartApi:
 
     def getResult(self, url: str) -> dict:
         response = None
-
         try:
             response = urllib.request.urlopen(url)
             json_text = response.read().decode(encoding='utf-8')
@@ -65,8 +64,8 @@ class WalmartApi:
             if response != None:
                 response.close()
 
-    def getNameImagePriceQuant(self, results: dict, search_query) -> ProductDetail:
 
+    def getNameImagePriceQuant(self, results: dict, search_query) -> ProductDetail:
         possibleQuants = [
             ' each',
             ' bunch',
