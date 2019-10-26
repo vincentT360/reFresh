@@ -55,7 +55,7 @@ class Ingredient:
                 self.unit = 'count'
             else:
                 self.unit = self.ureg.parse_expression(unit)
-        except:
+        except pint.errors.UndefinedUnitError:
             self.unit = 'count'
         self.amount = amount
         self.full_title = original
