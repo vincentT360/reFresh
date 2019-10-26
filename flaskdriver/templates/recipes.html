@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+{% for recipe in recipes %}
+    <p>{{ recipe.title }}</p>
+    <img src="{{ recipe.image }}" alt=""></img>
+{% endfor %}
+
+{% endblock content %}

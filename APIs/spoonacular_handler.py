@@ -1,6 +1,7 @@
 import os
 import requests
 import pint
+
 import APIs.walmartRetrieval as wallAPI
 
 
@@ -172,3 +173,4 @@ if __name__ == '__main__':
                                                             'image': 'https://spoonacular.com/cdn/ingredients_100x100/whole-chicken.jpg'}],
                                                        'unusedIngredients': [], 'likes': 0}])
     print((x[0] - wallAPI.WalmartApi(reg).query_search('white rice')).amount)
+

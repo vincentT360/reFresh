@@ -54,7 +54,6 @@ class WalmartApi:
 
     def getResult(self, url: str) -> dict:
         response = None
-
         try:
             response = urllib.request.urlopen(url)
             json_text = response.read().decode(encoding='utf-8')
@@ -65,8 +64,8 @@ class WalmartApi:
             if response != None:
                 response.close()
 
-    def getNameImagePriceQuant(self, results: dict, search_query) -> ProductDetail:
 
+    def getNameImagePriceQuant(self, results: dict, search_query) -> ProductDetail:
         possibleQuants = [
             ' each',
             ' bunch',
@@ -87,7 +86,7 @@ class WalmartApi:
         quant = ""
         quantType = ""
 
-        productUrl = prodResults['basic']['name'].lower()
+        productUrl = prodResults['basic']['name'].lower(
 
         # Attempts to isolate the quantity and quantity type in the name
         for qType in possibleQuants:
