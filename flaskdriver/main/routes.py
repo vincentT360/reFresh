@@ -2,6 +2,8 @@ from flask import render_template, request, Blueprint, redirect, url_for
 from flaskdriver import db
 from flaskdriver.models import Ingredient
 from flaskdriver.forms import AddIngredientForm
+from APIs.walmartRetrieval import WalmartApi
+from APIs.spoonacular_handler import Spoonacular
 
 main = Blueprint("main", __name__)
 
@@ -23,3 +25,13 @@ def pick_ingredients():
 
     ingredients = Ingredient.query.order_by(Ingredient.name).all()
     return render_template("pick_ingredients.html", title=title, ingredients=ingredients, form=form)
+
+@main.route("/recipes", methods=['GET', 'POST'])
+def get_recipes():
+    title = "Choose recipes"
+    ingredients = [ingredient.name for ingredient in Ingredient.query.order_by(Ingredient.name).all()]
+
+    spoonacular = Spoonacular()
+    recipes = spoonacular.find_by_ingredients(2, ingredients)
+    
+    return render_template("recipes.html", title=title, recipes=recipes)
