@@ -55,7 +55,7 @@ class Ingredient:
                 self.unit = 'count'
             else:
                 self.unit = self.ureg.parse_expression(unit)
-        except:
+        except pint.errors.UndefinedUnitError:
             self.unit = 'count'
         self.amount = amount
         self.full_title = original
@@ -74,7 +74,7 @@ class Ingredient:
             raise TypeError(f'Cannot subtract {type(right)} from Ingredient.')
 
     def __neg__(self):
-        return Ingredient(self.name, self.id, self.image, str(self.unit), -self.amount, self.full_title, self.ureg)
+        return Ingredient(self.name, self.sp_id, self.image, str(self.unit), -self.amount, self.full_title, self.ureg)
 
 
 if __name__ == '__main__':
