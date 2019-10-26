@@ -1,5 +1,5 @@
 body {
-    font-family: "Quicksand";
+    font-family: "Caveat Brush";
     font-size: 18px;
 }
 
@@ -16,15 +16,19 @@ body {
     height: 50vh;
 }
 
-#splash-img {
-    height: 50vh;
-    width: 100vw;
-    object-fit: cover;
-    object-position: 50% 50%;
+.splash-container {
+    width: 85vh;
+    height: 200vh;
+    background: url('./images/splash.png');
+    background-repeat: no-repeat;
+      background-size: 100% 100%;
+      -webkit-background-size: 100% 100%; /*  Safari  */
+      -khtml-background-size: 100% 100%; /*  Konqueror  */
+      -moz-background-size: 100% 100%; /*  Firefox  */
+   
 }
-
 #nav-img {
-    height: 10vh;
+    height: 8vh;
 }
 
 #ingredients-div {
