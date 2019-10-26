@@ -2,21 +2,15 @@
 {% block content %}
 
 
-<!--
-<div id="home-container" class="container">
-    <p>Hello World!</p>
-    <a href="{{ url_for('main.pick_ingredients') }}">Pick Your Ingredients</a>
-</div>
--->
-
-<div class="container">
-    <div class="row h-50">
+<div class="container-fluid">
+    <div id="row-img" class="row h-50">
         <div class = "col-md-12">
-            <img id="splash-img" class="img-fluid" src="{{ url_for('static', filename='images/splashBack.jpg') }}"></img>
+            <img id="splash-img" class="img-fluid" src="{{ url_for('static', filename='images/splashBack.jpg') }}">
+            </img>
         </div>
     </div>
     <div class="row h-50">
-        <div class="col-md-6">
+        <div class="col-md-6 mt-3">
             <h3> Our Features: </h3>
             <ul>
                 <li>Find Recipes</li>
@@ -25,7 +19,7 @@
                 <li>Save Food</li>
             </ul>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 mt-3">
             <h3> The Boo Fresh Promise: </h3>
             <p>At Boo Fresh, our team is commited to helping you save your leftover ingredients for your next tasty meal.</p>
             <a href="{{ url_for('main.pick_ingredients')}}">Ingredients</a>

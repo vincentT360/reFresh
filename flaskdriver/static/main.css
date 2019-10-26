@@ -1,5 +1,5 @@
 body {
-    font-family: "Times New Roman";
+    font-family: "Quicksand";
     font-size: 18px;
 }
 
@@ -17,8 +17,10 @@ body {
 }
 
 #splash-img {
-    height: 70vh;
+    height: 50vh;
     width: 100vw;
+    object-fit: cover;
+    object-position: 50% 50%;
 }
 
 #nav-img {
