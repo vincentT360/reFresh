@@ -1,16 +1,50 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<div class="container">
-    {% for item in ingredients %}
-        <p>{{ item.name }}</p>
-    {% endfor %}
-    <form action="" method="POST">
-        {{ form.hidden_tag() }}
-        {{ form.name.label(class="form-control-label") }}
-        {{ form.name(class="form-control form-control-lg") }}
-        {{ form.submit(class="btn btn-outline-info") }}
-    </form>
+<div id="ingredients-div" class="container">
+    <div class="row">
+            <h2 class="col-md-6">Pick your ingredients</h2>
+            <div class="col-md-6 pl-5 mb-5">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add ingredient</button>
+            </div>
+            
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Pick an ingredient</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="POST">
+                            {{ form.hidden_tag() }}
+                            {{ form.name.label(class="form-control-label") }}
+                            {{ form.name(class="form-control form-control-lg") }}
+                            {{ form.submit(class="btn btn-outline-info") }}
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+    
+    <div class="row border-primary">
+        {% for item in ingredients %}
+                <div class="card mx-2">
+                    <div class="card-body">
+                        <p class="card-text">{{ item.name }}</p>
+                    </div>
+                </div>
+        {% endfor %}
+    </div>
+    
+    
     
 </div>
 
