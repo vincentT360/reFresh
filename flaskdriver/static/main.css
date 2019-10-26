@@ -12,6 +12,15 @@ body {
     /*border: 1px solid grey;*/
 }
 
-#spash-row {
+#splash-row {
     height: 50vh;
+}
+
+#splash-img {
+    height: 70vh;
+    width: 100vw;
+}
+
+#nav-img {
+    height: 10vh;
 }
