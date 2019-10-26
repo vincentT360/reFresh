@@ -1,7 +1,32 @@
 import json
 import urllib.request
 import urllib.parse
+import re
 
+class ProductDetail:
+    def __init__(self, name: str, imageUrl: str, price: float, quant: str, quantType: str):
+        self.name = name
+        self.imageUrl = imageUrl
+        self.price = price
+        self.quant = quant
+        self.quantType = quantType
+    
+    def getName(self):
+        return self.name
+
+    def getImageUrl(self):
+        return self.imageUrl
+    
+    def getPrice(self):
+        return self.price
+    
+    def getQuant(self):
+        #Returns quantity amount like 16
+        return self.quant
+    
+    def getQuantType(self):
+        #Returns quantity type like fl oz
+        return self.quantType
 
 class WalmartApi:
     baseUrl = "https://grocery.walmart.com/v4/api/products"
@@ -31,9 +56,51 @@ class WalmartApi:
             if response != None:
                 response.close()
 
-    def getNameImagePrice(self, results: dict):
-        resultProducts = results['products'][0]
+    def getNameImagePriceQuant(self, results: dict) -> ProductDetail:
 
+        possibleQuants = [
+            ' each',
+            ' bunch',
+            ' count',
+            ' fl oz',
+            ' fluid ounce',
+            ' oz',
+            ' gal',
+            ' lb',
+        ]
+
+        prodResults = results['products'][0]
+
+        name = prodResults['basic']['name']
+        img = prodResults['basic']['image']['thumbnail']
+        price = prodResults['store']['price']['list']
+        quant = ""
+        quantType = ""
+
+        productUrl = prodResults['basic']['name'].lower()
+        print(productUrl)
+
+        #Attempts to isolate the quantity and quantity type in the name
+        for qType in possibleQuants:
+            if qType in productUrl:
+                qLen = len(qType)
+                qIndex = productUrl.find(qType)
+                quant = productUrl[(qIndex-5):(qIndex+qLen)].strip()
+                quantType = qType
+                break
+
+        #Special case if the quantity is each
+        if(quantType != " each"):
+            match = re.search(r"\d", quant)
+
+            if match.start() is not None:
+                quant = quant[int(match.start()):]
         
+        elif(quantType == " each"):
+            quant = quant[quant.find("each"):]
+            quant = "1 " + quant
 
-        print(resultProducts)
+        quant = quant.split()
+        product = ProductDetail(name, img, price, quant[0], quant[1])
+
+        return product
