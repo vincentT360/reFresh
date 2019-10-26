@@ -6,6 +6,10 @@ class AddIngredientForm(FlaskForm):
     name = StringField('New Ingredient', validators=[DataRequired()])
     submit = SubmitField('Add ingredient')
 
+class SearchRecipeForm(FlaskForm):
+    name = StringField('Search for a recipe', validators=[DataRequired()])
+    submit = SubmitField('Search')
+    
 class ChooseRecipeForm(FlaskForm):
     select = SelectField('Choose recipe', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Choose recipe')
