@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<form action="" method="GET">
+    {{ form.hidden_tag() }}
+    {{ form.name.label(class="form-control-label") }}
+    {{ form.name(class="form-control form-control-lg") }}
+    {{ form.submit(class="btn btn-outline-info") }}
+</form>
+
+{% endblock content %}
