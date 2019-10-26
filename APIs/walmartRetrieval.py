@@ -10,8 +10,8 @@ class ProductDetail:
         self.name = name
         self.imageUrl = imageUrl
         self.price = price
-        self.quant = quant
-        self.quantType = quantType
+        self.amount = quant
+        self.unit = quantType
 
     def getName(self):
         return self.name
@@ -24,11 +24,11 @@ class ProductDetail:
 
     def getQuant(self):
         # Returns quantity amount like 16
-        return self.quant
+        return self.amount
 
     def getQuantType(self):
         # Returns quantity type like fl oz
-        return self.quantType
+        return self.unit
 
 
 class WalmartApi:
@@ -111,6 +111,8 @@ class WalmartApi:
         quant = quant.split()
         amount = int(quant[0])
         unit = quant[1]
+        if unit == 'oz':
+            unit = 'floz'
 
         if unit == 'bunch':
             unit = 'count'
@@ -120,8 +122,6 @@ class WalmartApi:
             amount = 15
         elif unit == 'count':
             pass
-        elif unit == 'oz':
-            unit = 'floz'
         else:
             unit = self.ureg.parse_expression(unit)
 
