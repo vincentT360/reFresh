@@ -10,7 +10,7 @@ class Spoonacular:
         self._api_key = os.environ['SP_KEY']
         self.ureg = ureg
 
-    def find_by_ingredients(self, ingredients: [str], limit=2):
+    def find_by_ingredients(self, ingredients: [str], limit=1):
         url = 'https://api.spoonacular.com/recipes/findByIngredients'
         body = {
             'apiKey': self._api_key,

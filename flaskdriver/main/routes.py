@@ -49,4 +49,39 @@ def get_recipes():
 
 @main.route("/products")
 def get_products():
+    #Focus on IngredientProduct (ingredients from recipe)
+    #Get name and put into walmartHandler
+    #From walmart handler figure out if quantity sold from walmart is enough
+    #If enough then change quantity to leftover quantity
+    #If not enough then change price to total for buying x quantities, then change leftover quantity
+    ureg = pint.UnitRegistry
+    walmart = WalmartApi(ureg)
+    ingredients = IngredientProduct.query.all()
+
+    try:
+        db.session.query(IngredientProduct).delete()
+        db.session.commit()
+    except:
+        db.session.rollback()
+    
+
+    for i in ingredients:
+        walmartItem = walmart.query_search(i.name)
+        if(walmartItem.getQuant() >= i.quantity):
+            #To Get Leftovers:
+            i.quantity = walmartItem.getQuant() - i.quantity
+            #New price when we buy 1 item
+            i.price = walmartItem.getPrice()
+        elif(walmartItem.getQuant() < i.quantity):
+            base_quant = walmartItem.getQuant()
+            base_price = walmartItem.getPrice()
+            #While walmart total quant is less than needed
+            #Add more
+            while(walmartItem.getQuant() < i.quantity):
+                walmartItem.price = walmartItem.price + base_price
+                walmartItem.amount = walmartItem.amount + base_quant
+            i.quantity = walmartItem.getQuant() - i.quantity
+            i.price = walmartItem.getPrice()
+    
+
     return render_template("get_products.html")
