@@ -108,7 +108,7 @@ class WalmartApi:
             quant = "1 " + 'count'
 
         quant = quant.split()
-        amount = int(quant[0])
+        amount = float(quant[0])
         unit = quant[1]
         if unit == 'oz':
             unit = 'floz'

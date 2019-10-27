@@ -1,7 +1,21 @@
 {% extends "layout.html" %}
 {% block content %}
-
-
+<div>
+    <table>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Quantity</th>
+    <th>Total</th>
+        {% for product in ingredients %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.quantity }} {{ product.quantity_type }} x {{ product_multiplier_dict[product.name] }}</td>
+            <td>{{ product.price * product_multiplier_dict[product.name] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 <p>It worked!</p>
 
 {% endblock content %}

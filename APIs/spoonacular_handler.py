@@ -18,9 +18,8 @@ class Spoonacular:
             'query': query
         }
         response = requests.get(url, params=body).json()
-        print(response)
         return [
-            Meal(meal['title'], meal['id'], meal['image'], self.find_by_id(meal['id']), [], self.ureg, prebuilt=True)
+            Meal(meal['title'], meal['id'], 'https://spoonacular.com/recipeImages/' + meal['image'], self.find_by_id(meal['id']), [], self.ureg, prebuilt=True)
             for meal in
             response['results']]
 
