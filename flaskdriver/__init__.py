@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'dfad814Nbadjp24fg2'
-db = SQLAlchemy(app, session_options={"autoflush" : True})
+db = SQLAlchemy(app)
 
 def clear_data():
     meta = db.metadata
