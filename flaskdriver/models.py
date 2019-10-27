@@ -15,6 +15,7 @@ class IngredientProduct(db.Model):
 
 class Meal(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(120), unique=True)
     ingredients = db.relationship('IngredientProduct', backref='meal', lazy='subquery')
     meal_plan_id = db.Column(db.Integer, db.ForeignKey('meal_plan.id'))
 
