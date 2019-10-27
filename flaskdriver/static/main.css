@@ -1,6 +1,6 @@
 body {
-    font-family: "Caveat Brush";
-    font-size: 22px;
+    font-family: "Monsterrat";
+    font-size: 18px;
 }
 
 .btn {
@@ -21,7 +21,7 @@ body {
 }
 
 .nav-link {
-    color: rgb(90, 143, 220);
+    color: white;
 }
 
 .navbar-toggler {
@@ -29,7 +29,8 @@ body {
 }
 
 .navbar {
-    border-bottom: 1px solid rgb(90,143,220);
+    background: rgb(90,143,220);
+    background: linear-gradient(90deg, rgba(90,143,220,1) 0%, rgba(143,215,197,1) 59%);
 }
 .navbar-brand {
     font-size: 2.0em;
