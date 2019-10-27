@@ -1,6 +1,6 @@
 from flask import render_template, request, Blueprint, redirect, url_for
 from flaskdriver import db
-from flaskdriver.models import Ingredient, IngredientProduct
+from flaskdriver.models import Ingredient, IngredientProduct, Meal, MealPlan
 from flaskdriver.forms import AddIngredientForm, ChooseRecipeForm, SearchRecipeForm
 from APIs.walmartRetrieval import WalmartApi
 from APIs.spoonacular_handler import Spoonacular
@@ -46,8 +46,14 @@ def get_recipes_from_search(recipes):
 
     if form.validate_on_submit():
         chosen_recipe = {recipe.sp_id : recipe for recipe in recipes}[form.select.data]
+        meal_plan = MealPlan()
+        db.session.add(meal_plan)
+        db.session.commit()
+        new_meal = Meal(mealplan=meal_plan)
+        db.session.add(new_meal)
+        db.session.commit()
         for v in chosen_recipe.ingredients.values():
-            new_ingredient = IngredientProduct(name=v.name, image_url=v.image, price=0, quantity=v.amount, quantity_type=str(v.unit))
+            new_ingredient = IngredientProduct(name=v.name, image_url=v.image, price=0, quantity=v.amount, quantity_type=str(v.unit), meal=new_meal)
             db.session.add(new_ingredient)
             db.session.commit()
         return redirect(url_for('main.get_products'))
@@ -65,8 +71,14 @@ def get_recipes_from_ingredients():
 
     if form.validate_on_submit():
         chosen_recipe = {recipe.sp_id : recipe for recipe in recipes}[form.select.data]
+        meal_plan = MealPlan()
+        db.session.add(meal_plan)
+        db.session.commit()
+        new_meal = Meal(mealplan=meal_plan)
+        db.session.add(new_meal)
+        db.session.commit()
         for v in chosen_recipe.ingredients.values():
-            new_ingredient = IngredientProduct(name=v.name, image_url=v.image, price=0, quantity=v.amount, quantity_type=str(v.unit))
+            new_ingredient = IngredientProduct(name=v.name, image_url=v.image, price=0, quantity=v.amount, quantity_type=str(v.unit), meal=new_meal)
             db.session.add(new_ingredient)
             db.session.commit()
         return redirect(url_for('main.get_products'))
@@ -85,7 +97,7 @@ def get_products():
     #If not enough then change price to total for buying x quantities, then change leftover quantity
     ureg = pint.UnitRegistry
     walmart = WalmartApi(ureg)
-    ingredients = IngredientProduct.query.all()
+    ingredients = IngredientProduct.query.options(db.joinedload_all('*')).all()
 
     try:
         db.session.query(IngredientProduct).delete()
@@ -112,11 +124,13 @@ def get_products():
                 walmartItem.amount = walmartItem.amount + base_quant
             i.quantity = walmartItem.getQuant()
             i.price = walmartItem.getPrice()
-        new_ingredient = IngredientProduct(name=i.name, image_url=i.image_url, price=i.price, quantity=i.quantity, quantity_type=i.quantity_type)
+        new_ingredient = IngredientProduct(name=i.name, image_url=i.image_url, price=i.price, quantity=i.quantity, quantity_type=i.quantity_type, meal=i.meal)
         db.session.add(new_ingredient)
         db.session.commit()
         product_multiplier_dict[i.name] = product_multiplier
 
     ingredients = IngredientProduct.query.all()
     
-    return render_template("get_products.html", title=title, ingredients=ingredients, product_multiplier_dict=product_multiplier_dict)
+    total = sum(ing.price * product_multiplier_dict[ing.name] for ing in ingredients)
+    return render_template("get_products.html", title=title, ingredients=ingredients, product_multiplier_dict=product_multiplier_dict, total=total)
+
