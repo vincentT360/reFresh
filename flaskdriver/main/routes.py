@@ -121,7 +121,7 @@ def get_products():
             while(walmartItem.getQuant() < i.quantity):
                 product_multiplier += 1
                 walmartItem.price = walmartItem.price + base_price
-                walmartItem.amount = walmartItem.amount + base_quant
+                walmartItem.quant = walmartItem.quant + base_quant
             i.quantity = walmartItem.getQuant()
             i.price = walmartItem.getPrice()
         new_ingredient = IngredientProduct(name=i.name, image_url=i.image_url, price=i.price, quantity=i.quantity, quantity_type=i.quantity_type, meal=i.meal)

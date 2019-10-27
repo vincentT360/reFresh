@@ -85,9 +85,10 @@ class WalmartApi:
             ' lb',
             ' bag',
             '-ounce',
-            ' pint'
-            ' gallon'
-            ' ounce'
+            ' pint',
+            ' gallon',
+            ' ounce',
+            ' QT'
         ]
 
         prodResults = results['products'][0]
