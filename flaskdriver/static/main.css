@@ -1,5 +1,5 @@
 body {
-    font-family: "Monsterrat";
+    font-family: "Quicksand";
     font-size: 18px;
 }
 
@@ -64,3 +64,6 @@ body {
     margin-top: 5vh;
 }
 
+.card {
+    width: 20%;
+}
