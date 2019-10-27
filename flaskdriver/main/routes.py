@@ -17,6 +17,11 @@ def home():
         db.session.commit()
     return render_template("home.html", title=title)
 
+@main.route("/about")
+def about():
+    title = "About"
+    return render_template("about.html", title=title)
+
 @main.route("/pick-ingredients", methods=['GET', 'POST'])
 def pick_ingredients():
     title = "Pick the groceries you want to get"
