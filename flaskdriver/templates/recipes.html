@@ -4,7 +4,7 @@
     <form method="POST">
         <div class="row my-3 justify-content-center">
         {{ form.hidden_tag() }}
-        {{ form.select.label(class="form-control-label") }}
+        {{ form.select.label(class="form-control-label mr-3") }}
         {{ form.select(class="form-select") }}
         </div>
         <div class="row my-3 justify-content-center">
@@ -14,10 +14,12 @@
 
 
 {% for recipe in recipes %}
-<div class="row justify-content-center">
-    <div class="col-md-12">
+<div class="row justify-content-center my-3">
+    <div class="col-md-6 justify-content-center">
         <h3 class="text-center">{{ recipe.title }}</h3>
-        <img class="justify-content-center rounded" src="{{ recipe.image }}" alt=""></img>
+    </div>
+    <div class="col-md-6 justify-content-center">
+        <img class="rounded justify-content-center" src="{{ recipe.image }}" alt=""></img>
     </div>
 </div>
     
