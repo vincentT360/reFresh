@@ -77,6 +77,9 @@ def get_recipes_from_ingredients():
 
 @main.route("/products")
 def get_products():
+    title = "Your Products"
+    product_multiplier_dict = {}
+    product_multiplier = 1
     #Focus on IngredientProduct (ingredients from recipe)
     #Get name and put into walmartHandler
     #From walmart handler figure out if quantity sold from walmart is enough
@@ -94,10 +97,10 @@ def get_products():
     
 
     for i in ingredients:
+        product_multiplier = 1
         walmartItem = walmart.query_search(i.name)
         if(walmartItem.getQuant() >= i.quantity):
-            #To Get Leftovers:
-            i.quantity = walmartItem.getQuant() - i.quantity
+            i.quantity = walmartItem.getQuant()
             #New price when we buy 1 item
             i.price = walmartItem.getPrice()
         elif(walmartItem.getQuant() < i.quantity):
@@ -106,10 +109,16 @@ def get_products():
             #While walmart total quant is less than needed
             #Add more
             while(walmartItem.getQuant() < i.quantity):
+                product_multiplier += 1
                 walmartItem.price = walmartItem.price + base_price
                 walmartItem.amount = walmartItem.amount + base_quant
-            i.quantity = walmartItem.getQuant() - i.quantity
+            i.quantity = walmartItem.getQuant()
             i.price = walmartItem.getPrice()
-    
+        new_ingredient = IngredientProduct(name=i.name, image_url=i.image_url, price=i.price, quantity=i.quantity, quantity_type=i.quantity_type)
+        db.session.add(new_ingredient)
+        db.session.commit()
+        product_multiplier_dict[i.name] = product_multiplier
 
-    return render_template("get_products.html")
+    ingredients = IngredientProduct.query.all()
+    
+    return render_template("get_products.html", title=title, ingredients=ingredients, product_multiplier_dict=product_multiplier_dict)
