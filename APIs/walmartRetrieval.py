@@ -128,6 +128,6 @@ class WalmartApi:
             quant = "4 count"
 
         quant = quant.split()
-        product = ProductDetail(name, img, price, float(quant[0]), quant[1])
+        product = ProductDetail(name, img, price, float(quant[0].split('-')[0]), quant[1])
 
         return product 
