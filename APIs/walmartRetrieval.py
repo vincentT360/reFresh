@@ -1,7 +1,6 @@
 import urllib.request
 import urllib.parse
 import re
-import pint
 import json
 
 
@@ -38,10 +37,9 @@ class ProductDetail:
 
 
 class WalmartApi:
-    def __init__(self, ureg):
-        self.ureg = ureg
 
-    baseUrl = "https://grocery.walmart.com/v4/api/products"
+    def __init__(self):
+        self.baseUrl = "https://grocery.walmart.com/v4/api/products"
 
     def query_search(self, search_query: str) -> ProductDetail:
         return self.getNameImagePriceQuant(self.getResult(self.buildSearchUrl(search_query)))
@@ -55,7 +53,7 @@ class WalmartApi:
             ('page', 1),
             ('offset', 0)
         ]
-        return WalmartApi.baseUrl + '/search?' + urllib.parse.urlencode(query_parameters)
+        return self.baseUrl + '/search?' + urllib.parse.urlencode(query_parameters)
 
     def getResult(self, url: str) -> dict:
         response = None

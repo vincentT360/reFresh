@@ -4,7 +4,6 @@ from flaskdriver.models import Ingredient, IngredientProduct, Meal, MealPlan
 from flaskdriver.forms import AddIngredientForm, ChooseRecipeForm, SearchRecipeForm
 from APIs.walmartRetrieval import WalmartApi
 from APIs.spoonacular_handler import Spoonacular
-import pint
 
 main = Blueprint("main", __name__)
 
@@ -43,8 +42,7 @@ def search_for_recipes():
 def get_recipes_from_search(recipes):
     form = ChooseRecipeForm()
     title = "Choose recipes"
-    reg = pint.UnitRegistry()
-    spoonacular = Spoonacular(reg)
+    spoonacular = Spoonacular()
     recipes = spoonacular.search_recipes(recipes)
     form.select.choices = [(recipe.sp_id, recipe.title) for recipe in recipes]
 
@@ -66,8 +64,7 @@ def get_recipes_from_ingredients():
     form = ChooseRecipeForm()
     title = "Choose recipes"
     ingredients = [ingredient.name for ingredient in Ingredient.query.order_by(Ingredient.name).all()]
-    reg = pint.UnitRegistry()
-    spoonacular = Spoonacular(reg)
+    spoonacular = Spoonacular()
     recipes = spoonacular.find_by_ingredients(ingredients)
     form.select.choices = [(recipe.sp_id, recipe.title) for recipe in recipes]
 
@@ -95,8 +92,7 @@ def get_products():
     #From walmart handler figure out if quantity sold from walmart is enough
     #If enough then change quantity to leftover quantity
     #If not enough then change price to total for buying x quantities, then change leftover quantity
-    ureg = pint.UnitRegistry
-    walmart = WalmartApi(ureg)
+    walmart = WalmartApi()
     ingredients = IngredientProduct.query.options(db.joinedload_all('*')).all()
 
     try:
@@ -132,6 +128,6 @@ def get_products():
     ingredients = IngredientProduct.query.all()
     meal_plan = MealPlan.query.first()
 
-    total = sum(ing.price * product_multiplier_dict[ing.name] for ing in ingredients)
+    total = f"{sum(ing.price * product_multiplier_dict[ing.name] for ing in ingredients):.2f}"
     return render_template("get_products.html", title=title, ingredients=ingredients, product_multiplier_dict=product_multiplier_dict, total=total, meal_plan=meal_plan)
 
