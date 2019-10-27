@@ -67,3 +67,11 @@ body {
 .card {
     width: 20%;
 }
+
+#search-recipe-row{
+    margin-top: 15vh;
+}
+
+#search-recipe-form{
+    width: 45%;
+}
