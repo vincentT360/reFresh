@@ -12,6 +12,10 @@ main = Blueprint("main", __name__)
 @main.route("/home")
 def home():
     title = "Home"
+    if MealPlan.query.first() == None:
+        meal_plan = MealPlan()
+        db.session.add(meal_plan)
+        db.session.commit()
     return render_template("home.html", title=title)
 
 @main.route("/pick-ingredients", methods=['GET', 'POST'])
@@ -46,10 +50,8 @@ def get_recipes_from_search(recipes):
 
     if form.validate_on_submit():
         chosen_recipe = {recipe.sp_id : recipe for recipe in recipes}[form.select.data]
-        meal_plan = MealPlan()
-        db.session.add(meal_plan)
-        db.session.commit()
-        new_meal = Meal(mealplan=meal_plan)
+        meal_plan = MealPlan.query.options(db.joinedload_all('*')).first()
+        new_meal = Meal(mealplan=meal_plan, name=chosen_recipe.title)
         db.session.add(new_meal)
         db.session.commit()
         for v in chosen_recipe.ingredients.values():
@@ -71,10 +73,8 @@ def get_recipes_from_ingredients():
 
     if form.validate_on_submit():
         chosen_recipe = {recipe.sp_id : recipe for recipe in recipes}[form.select.data]
-        meal_plan = MealPlan()
-        db.session.add(meal_plan)
-        db.session.commit()
-        new_meal = Meal(mealplan=meal_plan)
+        meal_plan = MealPlan.query.options(db.joinedload_all('*')).first()
+        new_meal = Meal(mealplan=meal_plan, name=chosen_recipe.title)
         db.session.add(new_meal)
         db.session.commit()
         for v in chosen_recipe.ingredients.values():
@@ -130,7 +130,8 @@ def get_products():
         product_multiplier_dict[i.name] = product_multiplier
 
     ingredients = IngredientProduct.query.all()
-    
+    meal_plan = MealPlan.query.first()
+
     total = sum(ing.price * product_multiplier_dict[ing.name] for ing in ingredients)
-    return render_template("get_products.html", title=title, ingredients=ingredients, product_multiplier_dict=product_multiplier_dict, total=total)
+    return render_template("get_products.html", title=title, ingredients=ingredients, product_multiplier_dict=product_multiplier_dict, total=total, meal_plan=meal_plan)
 
