@@ -24,7 +24,7 @@ def about():
 
 @main.route("/pick-ingredients", methods=['GET', 'POST'])
 def pick_ingredients():
-    title = "Pick the groceries you want to get"
+    title = "Pick ingredients"
     form = AddIngredientForm()
     if form.validate_on_submit():
         new_item = Ingredient(name=form.name.data)
@@ -91,7 +91,7 @@ def get_recipes_from_ingredients():
 
 @main.route("/products")
 def get_products():
-    title = "Your Products"
+    title = "Your Meal Plan"
     product_multiplier_dict = {}
     product_multiplier = 1
     #Focus on IngredientProduct (ingredients from recipe)

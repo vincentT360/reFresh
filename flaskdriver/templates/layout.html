@@ -8,10 +8,13 @@
 
     <!-- Title -->
     {% if title %}
-        <title>BooFresh - {{ title }}</title>
+        <title>reFresh - {{ title }}</title>
     {% else %}
-        <title>BooFresh</title>
+        <title>reFresh</title>
     {% endif %}
+
+    <!-- Icon -->
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='images/logo-icon.png') }}">
     
     <!-- Font Family -->
     <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
