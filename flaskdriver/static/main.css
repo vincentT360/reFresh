@@ -75,3 +75,8 @@ body {
 #search-recipe-form{
     width: 45%;
 }
+
+#product-img{
+    height: 100px;
+    width: 100px;
+}

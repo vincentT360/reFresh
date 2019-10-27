@@ -16,7 +16,7 @@
                     {% for product in ingredients %}
                         <tr>
                             <td>
-                                <img src="https://spoonacular.com/cdn/ingredients_100x100/{{ product.image_url }}">
+                                <img id = "product-img" src="https://spoonacular.com/cdn/ingredients_100x100/{{ product.image_url }}">
                             </td>
                             <td>{{ product.name.title() }}</td>
                             <td>${{ "{:.2f}".format(product.price) }}</td>
