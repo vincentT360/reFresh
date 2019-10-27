@@ -11,5 +11,5 @@ class SearchRecipeForm(FlaskForm):
     submit = SubmitField('Search')
     
 class ChooseRecipeForm(FlaskForm):
-    select = SelectField('Choose recipe', coerce=int, validators=[DataRequired()])
-    submit = SubmitField('Choose recipe')
+    select = SelectField('Choose A Recipe:', coerce=int, validators=[DataRequired()])
+    submit = SubmitField('Submit')
