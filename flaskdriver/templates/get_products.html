@@ -16,7 +16,7 @@
                     {% for product in ingredients %}
                         <tr>
                             <td>
-                                <img id = "product-img" src="https://spoonacular.com/cdn/ingredients_100x100/{{ product.image_url }}">
+                                <img id = "product-img" src="{{ "" if "https://" in product.image_url else "https://spoonacular.com/cdn/ingredients_100x100/" }}{{ product.image_url }}">
                             </td>
                             <td>{{ product.name.title() }}</td>
                             <td>${{ "{:.2f}".format(product.price) }}</td>
@@ -44,7 +44,7 @@
                     {% if meal.id == 1 %}
                         <h3>Sunday - {{ meal.name }}</h3>
                     {% elif meal.id == 2 %}
-                        <h3>Monday</h3>
+                        <h3>Monday - {{ meal.name }}</h3>
                     {% elif meal.id == 3 %}
                         <h3>Tuesday - {{ meal.name }}</h3>
                     {% elif meal.id == 4 %}

@@ -1,4 +1,4 @@
-from flask import render_template, request, Blueprint, redirect, url_for
+from flask import render_template, request, Blueprint, redirect, url_for, request
 from flaskdriver import db
 from flaskdriver.models import Ingredient, IngredientProduct, Meal, MealPlan
 from flaskdriver.forms import AddIngredientForm, ChooseRecipeForm, SearchRecipeForm
@@ -92,7 +92,7 @@ def get_recipes_from_ingredients():
             new_meal.belongs_to.append(new_ingredient)
             db.session.commit()
         return redirect(url_for('main.get_products'))
-    
+
     return render_template("recipes.html", title=title, recipes=recipes, form=form)
 
 
@@ -101,9 +101,8 @@ def get_suggestions():
     form = ChooseRecipeForm()
     title = "Choose another recipe"
     all_ingredients = [ingredient.name for ingredient in IngredientProduct.query.all()]
-    ingredients = sample(all_ingredients, int(len(all_ingredients)/2))
     spoonacular = Spoonacular()
-    recipes = spoonacular.find_by_ingredients(ingredients)
+    recipes = spoonacular.find_by_ingredients(all_ingredients)
     form.select.choices = [(recipe.sp_id, recipe.title) for recipe in recipes]
 
     if form.validate_on_submit():
@@ -117,7 +116,7 @@ def get_suggestions():
             if IngredientProduct.query.filter_by(name=v.name).first():
                 existing_ingredient = IngredientProduct.query.filter_by(name=v.name).first()
                 db.session.query(IngredientProduct).filter_by(name=v.name).delete()
-                updated_ingredient = IngredientProduct(name=existing_ingredient.name, 
+                updated_ingredient = IngredientProduct(name=existing_ingredient.name,
                                                         image_url=existing_ingredient.image_url,
                                                         price=existing_ingredient.price,
                                                         quantity=existing_ingredient.quantity,
@@ -130,14 +129,10 @@ def get_suggestions():
                 db.session.add(new_ingredient)
                 new_meal.belongs_to.append(new_ingredient)
                 db.session.commit()
-        return redirect(url_for('main.get_suggestions'))
+        return redirect(url_for('main.get_products'))
     
     return render_template("recipes.html", title=title, recipes=recipes, form=form)
 
-    
-
-
-    return render_template("recipes.html")
 
 @main.route("/products")
 def get_products():
@@ -157,7 +152,7 @@ def get_products():
         db.session.commit()
     except:
         db.session.rollback()
-    
+
 
     for i in ingredients:
         product_multiplier = 1

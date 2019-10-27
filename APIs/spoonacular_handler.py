@@ -6,7 +6,7 @@ class Spoonacular:
     def __init__(self):
         self._api_key = os.environ['SP_KEY']
 
-    def search_recipes(self, query, limit=2):
+    def search_recipes(self, query, limit=3):
         url = 'https://api.spoonacular.com/recipes/search'
         body = {
             'apiKey': self._api_key,
