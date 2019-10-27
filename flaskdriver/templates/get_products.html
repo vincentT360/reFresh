@@ -1,36 +1,66 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div id="shopping-list-div" class="container">
-        <table class="table">
-            <thead class="thead-dark">
-            <th scope="col"></th>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Total</th>
-            </thead>
-            <tbody>
-            {% for product in ingredients %}
-                <tr>
-                    <td>
-                        <img src="https://spoonacular.com/cdn/ingredients_100x100/{{ product.image_url }}">
-                    </td>
-                    <td>{{ product.name.title() }}</td>
-                    <td>${{ product.price }}</td>
-                    <td>{{ product.quantity }} {{ product.quantity_type }}</td>
-                    <td>x {{ product_multiplier_dict[product.name] }}</td>
-                    <td>${{ product.price * product_multiplier_dict[product.name] }}</td>
-                </tr>
-            {% endfor %}
-                <tr>
-                    <td></td>
-                    <td>Total</td>
-                    <td></td>
-                    <td>{{ ingredients.__len__() }} item(s)</td>
-                    <td></td>
-                    <td>${{ total }}</td>
-                </tr>
-            </tbody>
-        </table>
+    <div id="shopping-list-div" class="container my-5">
+        <div class="row">
+            <div class="col-md-7 mx-auto">
+                <table class="table">
+                    <thead class="thead-light">
+                    <th scope="col"></th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Purchase Quantity</th>
+                    <th scope="col">Total</th>
+                    </thead>
+                    <tbody>
+                    {% for product in ingredients %}
+                        <tr>
+                            <td>
+                                <img src="https://spoonacular.com/cdn/ingredients_100x100/{{ product.image_url }}">
+                            </td>
+                            <td>{{ product.name.title() }}</td>
+                            <td>${{ product.price }}</td>
+                            <td>{{ product.quantity }} {{ product.quantity_type }}</td>
+                            <td>x {{ product_multiplier_dict[product.name] }}</td>
+                            <td>${{ product.price * product_multiplier_dict[product.name] }}</td>
+                        </tr>
+                    {% endfor %}
+                        <tr>
+                            <td></td>
+                            <td>Total</td>
+                            <td></td>
+                            <td>{{ ingredients.__len__() }} item(s)</td>
+                            <td></td>
+                            <td>${{ total }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="col-md-4 mx-auto p-3 text-align-center">
+                <h3>Current Meal Plan</h3>
+                <hr/>
+                {% for meal in meal_plan.meals %}
+                    {% if meal.id == 1 %}
+                        <h3>Sunday - {{ meal.name }}</h3>
+                    {% elif meal.id == 2 %}
+                        <h3>Monday</h3>
+                    {% elif meal.id == 3 %}
+                        <h3>Tuesday - {{ meal.name }}</h3>
+                    {% elif meal.id == 4 %}
+                        <h3>Wednesday - {{ meal.name }}</h3>
+                    {% elif meal.id == 5 %}
+                        <h3>Thursday - {{ meal.name }}</h3>
+                    {% elif meal.id == 6 %}
+                        <h3>Friday - {{ meal.name }}</h3>
+                    {% elif meal.id == 7 %}
+                        <h3>Saturday - {{ meal.name }}</h3>
+                    {% else %}
+                        <h3>Sunday - {{ meal.name }}</h3>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        
 
 {% endblock content %}
