@@ -16,4 +16,4 @@ def clear_data():
 
 from flaskdriver.main.routes import main
 app.register_blueprint(main)
-# clear_data()
+clear_data()
