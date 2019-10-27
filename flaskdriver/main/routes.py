@@ -27,23 +27,21 @@ def pick_ingredients():
     ingredients = Ingredient.query.order_by(Ingredient.name).all()
     return render_template("pick_ingredients.html", title=title, ingredients=ingredients, form=form)
 
-@main.route("/search-recipes")
+@main.route("/search-recipes", methods=['GET', 'POST'])
 def search_for_recipes():
     title = "Search for a recipe"
     form = SearchRecipeForm()
     if form.validate_on_submit():
-        reg = pint.UnitRegistry()
-        spoonacular = Spoonacular(reg)
-        recipes = None
-        return redirect(url_for('main.get_recipes', recipes=recipes))
-
-    
+        return redirect(url_for('main.get_recipes_from_search', recipes=form.name.data))
     return render_template("search_for_recipes.html", title=title, form=form)
 
-@main.route("/recipes-from-search", methods=['GET', 'POST'])
+@main.route("/recipes-from-search/<recipes>", methods=['GET', 'POST'])
 def get_recipes_from_search(recipes):
     form = ChooseRecipeForm()
     title = "Choose recipes"
+    reg = pint.UnitRegistry()
+    spoonacular = Spoonacular(reg)
+    recipes = spoonacular.search_recipes(recipes)
     form.select.choices = [(recipe.sp_id, recipe.title) for recipe in recipes]
 
     if form.validate_on_submit():
@@ -52,7 +50,7 @@ def get_recipes_from_search(recipes):
             new_ingredient = IngredientProduct(name=v.name, image_url=v.image, price=0, quantity=v.amount, quantity_type=str(v.unit))
             db.session.add(new_ingredient)
             db.session.commit()
-        redirect(url_for('main.get_products'))
+        return redirect(url_for('main.get_products'))
     return render_template("recipes.html", title=title, recipes=recipes, form=form) #finish this
 
 @main.route("/recipes-from-ingredients", methods=['GET', 'POST'])
