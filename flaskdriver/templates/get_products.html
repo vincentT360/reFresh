@@ -19,10 +19,10 @@
                                 <img src="https://spoonacular.com/cdn/ingredients_100x100/{{ product.image_url }}">
                             </td>
                             <td>{{ product.name.title() }}</td>
-                            <td>${{ product.price }}</td>
+                            <td>${{ "{:.2f}".format(product.price) }}</td>
                             <td>{{ product.quantity }} {{ product.quantity_type }}</td>
                             <td>x {{ product_multiplier_dict[product.name] }}</td>
-                            <td>${{ product.price * product_multiplier_dict[product.name] }}</td>
+                            <td>${{ "{:.2f}".format(product.price * product_multiplier_dict[product.name]) }}</td>
                         </tr>
                     {% endfor %}
                         <tr>
