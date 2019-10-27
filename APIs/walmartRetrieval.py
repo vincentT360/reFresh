@@ -121,7 +121,7 @@ class WalmartApi:
             amount = 15
         elif unit == 'count':
             pass
-        else:
-            unit = self.ureg.parse_expression(unit)
+        #else:
+        #    unit = self.ureg.parse_expression(unit)
 
         return ProductDetail(name, img, price, amount, unit)
