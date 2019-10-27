@@ -30,7 +30,7 @@ class Spoonacular:
                                         ing['amount']['us']['value'], ing['name']) for ing in
                 response['ingredients']}
 
-    def find_by_ingredients(self, ingredients: [str], limit=2):
+    def find_by_ingredients(self, ingredients: [str], limit=3):
         url = 'https://api.spoonacular.com/recipes/findByIngredients'
         body = {
             'apiKey': self._api_key,
