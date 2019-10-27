@@ -1,8 +1,36 @@
 body {
     font-family: "Caveat Brush";
-    font-size: 18px;
+    font-size: 22px;
 }
 
+.btn {
+    border: 1px solid rgb(90, 143, 220)
+}
+
+.btn a{
+    color: rgb(90, 143, 220)
+}
+
+.btn:hover a {
+    color: white;
+}
+.btn:hover {
+    background-color: rgb(90, 143, 220);
+    transition: .4s;
+
+}
+
+.nav-link {
+    color: rgb(90, 143, 220);
+}
+
+.navbar-toggler {
+    border: 1px solid rgb(90, 143, 220);
+}
+
+.navbar {
+    border-bottom: 1px solid rgb(90,143,220);
+}
 .navbar-brand {
     font-size: 2.0em;
 }
@@ -34,3 +62,4 @@ body {
 #ingredients-div {
     margin-top: 5vh;
 }
+
