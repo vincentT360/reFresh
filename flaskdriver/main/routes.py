@@ -53,8 +53,9 @@ def get_recipes_from_search(recipes):
         db.session.add(new_meal)
         db.session.commit()
         for v in chosen_recipe.ingredients.values():
-            new_ingredient = IngredientProduct(name=v.name, image_url=v.image, price=0, quantity=v.amount, quantity_type=str(v.unit), meal=new_meal)
+            new_ingredient = IngredientProduct(name=v.name, image_url=v.image, price=0, quantity=v.amount, quantity_type=str(v.unit))
             db.session.add(new_ingredient)
+            new_meal.belongs_to.append(new_ingredient)
             db.session.commit()
         return redirect(url_for('main.get_products'))
     return render_template("recipes.html", title=title, recipes=recipes, form=form) #finish this
@@ -75,8 +76,9 @@ def get_recipes_from_ingredients():
         db.session.add(new_meal)
         db.session.commit()
         for v in chosen_recipe.ingredients.values():
-            new_ingredient = IngredientProduct(name=v.name, image_url=v.image, price=0, quantity=v.amount, quantity_type=str(v.unit), meal=new_meal)
+            new_ingredient = IngredientProduct(name=v.name, image_url=v.image, price=0, quantity=v.amount, quantity_type=str(v.unit))
             db.session.add(new_ingredient)
+            new_meal.belongs_to.append(new_ingredient)
             db.session.commit()
         return redirect(url_for('main.get_products'))
     
@@ -120,7 +122,7 @@ def get_products():
                 walmartItem.quant = walmartItem.quant + base_quant
             i.quantity = walmartItem.getQuant()
             i.price = walmartItem.getPrice()
-        new_ingredient = IngredientProduct(name=i.name, image_url=i.image_url, price=i.price, quantity=i.quantity, quantity_type=i.quantity_type, meal=i.meal)
+        new_ingredient = IngredientProduct(name=i.name, image_url=i.image_url, price=i.price, quantity=i.quantity, quantity_type=i.quantity_type)
         db.session.add(new_ingredient)
         db.session.commit()
         product_multiplier_dict[i.name] = product_multiplier
