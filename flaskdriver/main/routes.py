@@ -4,6 +4,7 @@ from flaskdriver.models import Ingredient, IngredientProduct, Meal, MealPlan
 from flaskdriver.forms import AddIngredientForm, ChooseRecipeForm, SearchRecipeForm
 from APIs.walmartRetrieval import WalmartApi
 from APIs.spoonacular_handler import Spoonacular
+from random import sample
 
 main = Blueprint("main", __name__)
 
@@ -17,10 +18,12 @@ def home():
         db.session.commit()
     return render_template("home.html", title=title)
 
+
 @main.route("/about")
 def about():
     title = "About"
     return render_template("about.html", title=title)
+
 
 @main.route("/pick-ingredients", methods=['GET', 'POST'])
 def pick_ingredients():
@@ -35,6 +38,7 @@ def pick_ingredients():
     ingredients = Ingredient.query.order_by(Ingredient.name).all()
     return render_template("pick_ingredients.html", title=title, ingredients=ingredients, form=form)
 
+
 @main.route("/search-recipes", methods=['GET', 'POST'])
 def search_for_recipes():
     title = "Search for a recipe"
@@ -42,6 +46,7 @@ def search_for_recipes():
     if form.validate_on_submit():
         return redirect(url_for('main.get_recipes_from_search', recipes=form.name.data))
     return render_template("search_for_recipes.html", title=title, form=form)
+
 
 @main.route("/recipes-from-search/<recipes>", methods=['GET', 'POST'])
 def get_recipes_from_search(recipes):
@@ -64,6 +69,7 @@ def get_recipes_from_search(recipes):
             db.session.commit()
         return redirect(url_for('main.get_products'))
     return render_template("recipes.html", title=title, recipes=recipes, form=form) #finish this
+
 
 @main.route("/recipes-from-ingredients", methods=['GET', 'POST'])
 def get_recipes_from_ingredients():
@@ -88,6 +94,50 @@ def get_recipes_from_ingredients():
         return redirect(url_for('main.get_products'))
     
     return render_template("recipes.html", title=title, recipes=recipes, form=form)
+
+
+@main.route("/suggestions", methods=['GET', 'POST'])
+def get_suggestions():
+    form = ChooseRecipeForm()
+    title = "Choose another recipe"
+    all_ingredients = [ingredient.name for ingredient in IngredientProduct.query.all()]
+    ingredients = sample(all_ingredients, int(len(all_ingredients)/2))
+    spoonacular = Spoonacular()
+    recipes = spoonacular.find_by_ingredients(ingredients)
+    form.select.choices = [(recipe.sp_id, recipe.title) for recipe in recipes]
+
+    if form.validate_on_submit():
+        chosen_recipe = {recipe.sp_id : recipe for recipe in recipes}[form.select.data]
+        meal_plan = MealPlan.query.options(db.joinedload_all('*')).first()
+        new_meal = Meal(mealplan=meal_plan, name=chosen_recipe.title)
+        db.session.add(new_meal)
+        db.session.commit()
+
+        for v in chosen_recipe.ingredients.values():
+            if IngredientProduct.query.filter_by(name=v.name).first():
+                existing_ingredient = IngredientProduct.query.filter_by(name=v.name).first()
+                db.session.query(IngredientProduct).filter_by(name=v.name).delete()
+                updated_ingredient = IngredientProduct(name=existing_ingredient.name, 
+                                                        image_url=existing_ingredient.image_url,
+                                                        price=existing_ingredient.price,
+                                                        quantity=existing_ingredient.quantity,
+                                                        quantity_type=existing_ingredient.quantity_type)
+                db.session.add(updated_ingredient)
+                new_meal.belongs_to.append(updated_ingredient)
+                db.session.commit()
+            else:
+                new_ingredient = IngredientProduct(name=v.name, image_url=v.image, price=0, quantity=v.amount, quantity_type=str(v.unit))
+                db.session.add(new_ingredient)
+                new_meal.belongs_to.append(new_ingredient)
+                db.session.commit()
+        return redirect(url_for('main.get_suggestions'))
+    
+    return render_template("recipes.html", title=title, recipes=recipes, form=form)
+
+    
+
+
+    return render_template("recipes.html")
 
 @main.route("/products")
 def get_products():
