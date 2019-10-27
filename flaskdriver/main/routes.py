@@ -118,5 +118,5 @@ def get_products():
         product_multiplier_dict[i.name] = product_multiplier
 
     ingredients = IngredientProduct.query.all()
-    
-    return render_template("get_products.html", title=title, ingredients=ingredients, product_multiplier_dict=product_multiplier_dict)
+    total = sum(ing.price * product_multiplier_dict[ing.name] for ing in ingredients)
+    return render_template("get_products.html", title=title, ingredients=ingredients, product_multiplier_dict=product_multiplier_dict, total=total)

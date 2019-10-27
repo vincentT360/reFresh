@@ -7,10 +7,18 @@
     {{ form.select(class="form-select") }}
     {{ form.submit(class="btn btn-outline-info") }}
 </form>
-
-{% for recipe in recipes %}
-    <p>{{ recipe.title }}</p>
-    <img src="{{ recipe.image }}" alt=""></img>
-{% endfor %}
-
+<table class="table">
+    <tbody>
+    {% for recipe in recipes %}
+    <tr class="mx-auto" style="width: 120px">
+        <td>
+            <img src="{{ recipe.image }}" class="img-thumbnail" style="max-width: 300px">
+        </td>
+        <td>
+            <h5>{{ recipe.title }}</h5>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock content %}
